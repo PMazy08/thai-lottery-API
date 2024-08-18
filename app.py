@@ -10,6 +10,8 @@ def say_hi():
     return {"Hello": "wassup"}
 
 @app.get("/lotto/{day}/{month}/{year}")
+# low >>> 30 ธันวาคม 2549
+
 def get_lotto_results(day: str, month: str, year: str):
     url = f"https://news.sanook.com/lotto/check/{day}{month}{year}"
 
@@ -43,7 +45,7 @@ def get_lotto_results(day: str, month: str, year: str):
         "side_prizes": re.compile(r"รางวัลข้างเคียงรางวัลที่ 1\s*\d+ รางวัลๆละ \d{1,3}(?:,\d{3})* บาท\s*([\d\s]+)"),
         "2back_number": re.compile(r"เลขท้าย 2 ตัว\s*\d+ รางวัลๆละ \d{1,3}(?:,\d{3})* บาท\s*(\d{2})"),
         "front_number": re.compile(r"เลขหน้า 3 ตัว\s*\d+ รางวัลๆละ \d{1,3}(?:,\d{3})* บาท\s*(\d{3})\s*(\d{3})"),
-        "back_number": re.compile(r"เลขท้าย 3 ตัว\s*\d+ รางวัลๆละ \d{1,3}(?:,\d{3})* บาท\s*(\d{3})\s*(\d{3})"),
+        "back_number": re.compile(r"เลขท้าย 3 ตัว\s*\d+ รางวัลๆละ \d{1,3}(?:,\d{3})* บาท\s*((?:\d{3}\s*){1,4})"),
         "lotto_2": re.compile(r"รางวัลที่ 2\s*มี \d+ รางวัลๆละ \d{1,3}(?:,\d{3})* บาท\s*([\d\s]+)"),
         "lotto_3": re.compile(r"รางวัลที่ 3\s*มี \d+ รางวัลๆละ \d{1,3}(?:,\d{3})* บาท\s*([\d\s]+)"),
         "lotto_4": re.compile(r"รางวัลที่ 4\s*มี \d+ รางวัลๆละ \d{1,3}(?:,\d{3})* บาท\s*([\d\s]+)"),
@@ -66,7 +68,7 @@ def get_lotto_results(day: str, month: str, year: str):
                 elif key == "front_number":
                     results[key] = [num.strip() for num in match.groups() if num.strip()]
                 elif key == "back_number":
-                    results[key] = [num.strip() for num in match.groups() if num.strip()]
+                    results[key] = [num.strip() for num in match.group(1).split() if num.strip()]
                 else:
                     results[key] = [prize.strip() for prize in match.group(1).split() if prize.strip()]
 
