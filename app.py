@@ -52,7 +52,7 @@ def get_lotto_results(day: str, month: str, year: str):
 
     for section in lotto_sections:
         text = section.get_text(separator='\n').strip()
-        print(f"Section Text:\n{text}\n")  # Debugging line to print section text
+        # print(f"Section Text:\n{text}\n") 
 
         for key, pattern in patterns.items():
             match = pattern.search(text)
@@ -72,6 +72,3 @@ def get_lotto_results(day: str, month: str, year: str):
 
     return results
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=10000)
